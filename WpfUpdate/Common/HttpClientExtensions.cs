@@ -32,11 +32,23 @@ namespace Update.Common
                 }
 
                 var headers = content.Headers;
+
+                if (!Directory.Exists("./temp"))
+                {
+                    Directory.CreateDirectory("./temp");
+                }
+
+                var fileinfo = new FileInfo("./temp/Update.zip");
+                if (fileinfo.Exists)
+                {
+                    fileinfo.Delete();
+                }
+
                 var contentLength = headers.ContentLength;
                 //using var fileStream = file.Create();
                 using (var responseStream = await content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
-                    var buffer = new byte[BufferSize];
+                    var buffer = new byte[(int)contentLength/100];
                     int bytesRead;
                     //var bytes = new List<byte>();
 
@@ -47,23 +59,21 @@ namespace Update.Common
                     }
                     progress?.Report(downloadProgress);
 
-                    using var filestream = new FileStream("./Update.zip", FileMode.Append, FileAccess.Write);
+                    using var filestream = new FileStream("./temp/Update.zip", FileMode.Append, FileAccess.Write);
 
-                    while ((bytesRead = await responseStream.ReadAsync(buffer, 0, BufferSize, cancellationToken).ConfigureAwait(false)) > 0)
+                    while ((bytesRead = await responseStream.ReadAsync(buffer, 0, buffer.Length/800, cancellationToken).ConfigureAwait(false)) > 0)
                     {
                         //bytes.AddRange(buffer.Take(bytesRead));
 
-                        //fileStream.Write(buffer, 0, bytesRead);
-
                         filestream.Write(buffer, 0, bytesRead);
-
-                        //刷新缓冲区
-                        //filestream.Flush();
 
                         downloadProgress.BytesReceived += (ulong)bytesRead;
 
                         progress?.Report(downloadProgress);
                     }
+
+
+
 
                     //return bytes.ToArray();
                 }

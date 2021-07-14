@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -25,17 +26,19 @@ namespace Update.Common
 
         public async Task DownloadFile(string url, FileInfo file)
         {
-            var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync(url);
-
             try
             {
+                var httpClient = new HttpClient();
+                var response = await httpClient.GetAsync(url);
+
+
                 var n = response.Content.Headers.ContentLength;
                 var stream = await response.Content.ReadAsStreamAsync();
+
                 using (var fileStream = file.Create())
                 using (stream)
                 {
-                    byte[] buffer = new byte[1024];
+                    byte[] buffer = new byte[8192];
                     var readLength = 0;
                     int length;
                     while ((length = await stream.ReadAsync(buffer, 0, buffer.Length)) != 0)
@@ -58,9 +61,9 @@ namespace Update.Common
 
                         //_startTime = DateTime.Now;
                         //BeforBytes = Packet.ReceivedBytes;
-                        Console.WriteLine("下载进度" + ((double)readLength) / n * 100);
+                        //Debug.WriteLine("下载进度" + ((double)readLength) / n * 100);
 
-                        Thread.Sleep(1000);
+                        //Thread.Sleep(1000);
                         var args = new DownloadStatisticsEventArgs();
                         args.Remaining = DateTime.Now;
                         args.Speed = (((double)readLength) / n * 100).ToString();
@@ -74,6 +77,7 @@ namespace Update.Common
             }
             catch (Exception e)
             {
+                Console.Write(e.Message);
             }
         }
     }

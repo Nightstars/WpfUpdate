@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using Update;
+using Update.ViewModel;
 
 namespace WpfUpdater
 {
@@ -20,10 +16,14 @@ namespace WpfUpdater
             {
                 Environment.Exit(0);
             }
-            Update updater = new Update(e.Args[0]);
-            //var param = e.Args[0].Split('|');
-            //var vm = new UpdateVM(param, updater.Close);
-            updater.Show();
+            //Update update = new Update();
+            ////var param = e.Args[0].Split('|');
+            ////var vm = new UpdateVM(e.Args[0].Split('|'));
+            ////update.DataContext = vm;
+            //update.Show();
+
+            Test  test = new Test(e.Args[0]);
+            test.Show();
         }
     }
 }

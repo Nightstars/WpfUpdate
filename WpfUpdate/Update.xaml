@@ -5,10 +5,171 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfUpdater"
         mc:Ignorable="d"
-        Title="Updater" Height="450" Width="800">
-    <Grid>
+        Title="Updater" Height="450" Width="720" WindowStartupLocation="CenterScreen">
+    <!--<Grid x:Name="container">
         <TextBlock Name="param"></TextBlock>
-        <TextBlock Name="progress" Margin="20"></TextBlock>
-        <TextBlock Name="speed"></TextBlock>
+        --><!--<TextBlock Name="progress" Margin="20,20"></TextBlock>--><!--
+        <TextBlock Name="zipProgress" Margin="20,50"></TextBlock>
+        <ProgressBar Name="progressBar" Margin="20 80"
+                     Value="{Binding ProgressValue}" Width="300" Height="20"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Top"
+                     ></ProgressBar>
+    </Grid>-->
+
+
+
+    <Window.Resources>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" x:Key="linear">
+            <GradientStop Offset="0" Color="#0081ff"/>
+            <!--<GradientStop Offset="0.5" Color="#1cbbb4"/>-->
+            <GradientStop Offset="1" Color="#1cbbb4"/>
+        </LinearGradientBrush>
+        <Style TargetType="Button" >
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="AliceBlue"/>
+            <Setter Property="Background" Value="{StaticResource linear}"/>
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="0" CornerRadius="5,5,5,5" Background="{StaticResource linear}">
+                            <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" ></ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type ProgressBar}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Height" Value="15"/>
+            <Setter Property="Background" Value="{StaticResource linear}"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Padding" Value="5,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid Background="#00000000">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Determinate"/>
+                                    <VisualState x:Name="Indeterminate">
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <PointAnimationUsingKeyFrames Storyboard.TargetName="Animation" Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)">
+                                                <EasingPointKeyFrame KeyTime="0:0:0" Value="0.5,0.5"/>
+                                                <EasingPointKeyFrame KeyTime="0:0:1.5" Value="1.95,0.5"/>
+                                                <EasingPointKeyFrame KeyTime="0:0:3" Value="0.5,0.5"/>
+                                            </PointAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+
+                            <Grid Height="{TemplateBinding Height}">
+                                <Border Background="#000000" CornerRadius="7.5" Opacity="0.05"/>
+                                <Border BorderBrush="#000000" BorderThickness="1" CornerRadius="7.5" Opacity="0.1"/>
+                                <Grid Margin="{TemplateBinding BorderThickness}">
+                                    <Border x:Name="PART_Track"/>
+                                    <Grid x:Name="PART_Indicator" ClipToBounds="True" HorizontalAlignment="Left" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition x:Name="width1"/>
+                                            <ColumnDefinition x:Name="width2" Width="0"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid x:Name="Animation"  RenderTransformOrigin="0.5,0.5">
+                                            <Grid.RenderTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform ScaleY="-1" ScaleX="1"/>
+                                                    <SkewTransform AngleY="0" AngleX="0"/>
+                                                    <RotateTransform Angle="180"/>
+                                                    <TranslateTransform/>
+                                                </TransformGroup>
+                                            </Grid.RenderTransform>
+                                            <Border Background="{TemplateBinding Background}" CornerRadius="7.5">
+                                                <Viewbox HorizontalAlignment="Left" StretchDirection="DownOnly" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                                                    <TextBlock Foreground="#ffffff" SnapsToDevicePixels="True" FontSize="{TemplateBinding FontSize}" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Value,StringFormat={}{0}%}" RenderTransformOrigin="0.5,0.5">
+                                                        <TextBlock.RenderTransform>
+                                                            <TransformGroup>
+                                                                <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                                                                <SkewTransform AngleY="0" AngleX="0"/>
+                                                                <RotateTransform Angle="0"/>
+                                                                <TranslateTransform/>
+                                                            </TransformGroup>
+                                                        </TextBlock.RenderTransform>
+                                                    </TextBlock>
+                                                </Viewbox>
+                                            </Border>
+                                            <Border BorderBrush="#000000" BorderThickness="1" CornerRadius="7.5" Opacity="0.1"/>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#c5c5c5"/>
+                            </Trigger>
+                            <Trigger Property="IsIndeterminate" Value="true">
+                                <Setter TargetName="width1" Property="Width" Value="0.25*"/>
+                                <Setter TargetName="width2" Property="Width" Value="0.725*"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="50" GlassFrameThickness="1" />
+    </WindowChrome.WindowChrome>
+    <Grid>
+        <Border CornerRadius="5" BorderThickness="2" BorderBrush="White" Margin="-9" >
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="1" Color="#FF414141" BlurRadius="8"/>
+            </Border.Effect>
+        </Border>
+        <Grid Height="289" Margin="0 0 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="0 1 0 0" Background="{StaticResource linear}">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="AliceBlue">
+                    <Run Text="发现新版本:   V1.2.6" FontSize="24"/>
+                    <LineBreak/>
+                     <LineBreak/>
+                    <Run Text="1、增加了更新提示" FontSize="16"/>
+                     <LineBreak/>
+                     <Run Text="2、增加了新特性" FontSize="16"/>
+                     <LineBreak/>
+                    <Run Text="3、优化了部分功能" FontSize="16"/>
+                </TextBlock>
+            </Grid>
+            <Grid Grid.Row="1" x:Name="updataGrid" >
+                <Button Width="171" Height="38" Content="立即升级"   Click="Download_Click" />
+            </Grid>
+            <Grid Grid.Row="1"  x:Name="progressGrid" Visibility="Collapsed">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <ProgressBar Width="520" Height="24" x:Name="progress" />
+                    <TextBlock Width="Auto" Text="正在加载中..." Height="38" x:Name="logTextBlock" HorizontalAlignment="Right"
+                           Margin="0 5 20 0 " Foreground="#FF646A70" />
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1" x:Name="confirmGrid" Visibility="Collapsed">
+                <TextBlock Width="171" Height="38" Text="正在解压资源..." FontSize="25" FontWeight="Bold"/>
+            </Grid>
+
+            <Grid Grid.Row="1" x:Name="unzipGrid" Visibility="Collapsed">
+                <TextBlock Name="zipProgress"></TextBlock>
+            </Grid>
+
+        </Grid>
     </Grid>
 </Window>

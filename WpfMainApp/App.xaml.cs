@@ -19,10 +19,11 @@ namespace WpfMainApp
             string currentVersion = "1.0.0";
             string lastVersion="1.0.1";
             string logHtml = "http://cloudapps.life:9003/";
-            string updateUrl = "http://192.168.216.1/Update.zip";
+            string updateUrl = "http://192.168.0.103:8080/Update.zip";
             string installPath = AppDomain.CurrentDomain.BaseDirectory;
             string updateZipMD5 = "1111";
-            Process.Start("Update.exe", $"{currentVersion}|{lastVersion}|{logHtml}|{updateUrl}|{installPath}|{updateZipMD5}");
+            //Process.Start("Update.exe", $"{currentVersion}|{lastVersion}|{logHtml}|{updateUrl}|{installPath}|{updateZipMD5}");
+            //Process.GetCurrentProcess().Kill();
         }
     }
 }

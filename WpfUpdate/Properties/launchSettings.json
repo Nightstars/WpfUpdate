@@ -2,7 +2,7 @@
   "profiles": {
     "WpfUpdater": {
       "commandName": "Project",
-      "commandLineArgs": "1.0.0|1.0.1|http://cloudapps.life:9003|http://192.168.2.114:12003/Update.zip|F:\\myproject\\vs\\WpfUpdater\\temp|69a60ac68f6ff1a86dd553cfd5ccd5cd"
+      "commandLineArgs": "1.0.0|1.0.1|http://cloudapps.life:9003|http://192.168.0.103:8080/Update.zip|F:\\myproject\\vs\\WpfUpdater\\temp|69a60ac68f6ff1a86dd553cfd5ccd5cd"
     }
   }
 }
