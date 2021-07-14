@@ -3,3 +3,11 @@
 ################################################################################
 
 /.vs
+/build
+/WpfUpdate/obj
+/WpfUpdate/bin/Debug/net5.0-windows
+/WpfMainApp/obj
+/WpfMainApp/bin/Debug/net5.0-windows
+/Demo/bin/Debug/net5.0
+/Demo/obj
+*.user
