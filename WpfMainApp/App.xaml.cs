@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows;
+using WpfMainApp.Util;
 
 namespace WpfMainApp
 {
@@ -16,6 +19,8 @@ namespace WpfMainApp
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            new UpdateUtil().checckUpdate("./WpfMainApp.exe");
+
             string currentVersion = "1.0.0";
             string lastVersion="1.0.1";
             string logHtml = "http://cloudapps.life:9003/";
