@@ -16,13 +16,17 @@ namespace WpfUpdater
             {
                 Environment.Exit(0);
             }
-            //Update update = new Update();
-            ////var param = e.Args[0].Split('|');
-            ////var vm = new UpdateVM(e.Args[0].Split('|'));
-            ////update.DataContext = vm;
+
+            //Update update = new Update(e.Args[0]);
             //update.Show();
 
-            Test  test = new Test(e.Args[0]);
+
+            //var param = e.Args[0].Split('|');
+            //var vm = new UpdateVM(e.Args[0].Split('|'));
+            //update.DataContext = vm;
+
+
+            Update2 test = new Update2(e.Args[0]);
             test.Show();
         }
     }

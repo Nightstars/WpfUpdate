@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Update.Common.net;
 
 namespace Update.Common
 {
@@ -17,12 +18,6 @@ namespace Update.Common
         /// 下载统计
         /// </summary>
         public event DownloadStatisticsEventHandler DownloadStatistics;
-
-        //public delegate void ProgressChangedEventHandler(object sender, ProgressChangedEventArgs e);
-        ///// <summary>
-        ///// 进度更新
-        ///// </summary>
-        //public event ProgressChangedEventHandler ProgressChanged;
 
         public async Task DownloadFile(string url, FileInfo file)
         {
@@ -38,9 +33,10 @@ namespace Update.Common
                 using (var fileStream = file.Create())
                 using (stream)
                 {
-                    byte[] buffer = new byte[8192];
+                    byte[] buffer = new byte[1024*50];
                     var readLength = 0;
                     int length;
+                    DateTime _startTime=DateTime.Now;
                     while ((length = await stream.ReadAsync(buffer, 0, buffer.Length)) != 0)
                     {
                         readLength += length;
@@ -48,29 +44,21 @@ namespace Update.Common
                         //var interval = DateTime.Now - _startTime;
 
                         //var downLoadSpeed = interval.Seconds < 1
-                        //    ? StatisticsUtil.ToUnit(Packet.ReceivedBytes - BeforBytes)
-                        //    : StatisticsUtil.ToUnit(Packet.ReceivedBytes - BeforBytes / interval.Seconds);
+                        //    ? NetUtil.ToUnit(readLength - (readLength - length))
+                        //    : NetUtil.ToUnit(readLength - (readLength - length) / interval.Seconds);
 
-                        //var size = (Packet.TotalBytes - Packet.ReceivedBytes) / (1024 * 1024);
+                        //var size = (n - readLength) / (1024 * 1024);
                         //var remainingTime = new DateTime().AddSeconds(Convert.ToDouble(size));
 
-                        //var args = new DownloadStatisticsEventArgs();
-                        //args.Remaining = remainingTime;
-                        //args.Speed = downLoadSpeed;
-                        //DownloadStatistics.BeginInvoke(this, args, null, null);
-
-                        //_startTime = DateTime.Now;
-                        //BeforBytes = Packet.ReceivedBytes;
-                        //Debug.WriteLine("下载进度" + ((double)readLength) / n * 100);
-
-                        //Thread.Sleep(1000);
                         var args = new DownloadStatisticsEventArgs();
-                        args.Remaining = DateTime.Now;
-                        args.Speed = (((double)readLength) / n * 100).ToString();
+                        //args.Remaining = remainingTime;
+                        args.Speed = Math.Round((double)(((double)readLength) / n * 100), 2).ToString();
                         DownloadStatistics.Invoke(this, args);
 
                         // 写入到文件
                         fileStream.Write(buffer, 0, length);
+
+                        _startTime = DateTime.Now;
                     }
                 }
 

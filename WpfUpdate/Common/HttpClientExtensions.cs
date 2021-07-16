@@ -20,7 +20,7 @@ namespace Update.Common
                 throw new ArgumentNullException(nameof(client));
             }
 
-            using (var responseMessage = await client.GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false))
+            using (var responseMessage = await client.GetAsync(requestUri).ConfigureAwait(false))
             {
                 responseMessage.EnsureSuccessStatusCode();
 

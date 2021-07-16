@@ -17,11 +17,13 @@ namespace WpfUpdater
     public partial class Update : Window
     {
         //UpdateVM updateVM=new UpdateVM ();
-        public Update()
+        string[] paramter = null;
+        public Update(string arg)
         {
             InitializeComponent();
             //param.Text = arg;
-            //var paramter = arg.Split('|');
+            paramter = arg.Split('|');
+            versionInfo.Text = $"发现新版本:   V{paramter[1]}";
             //container.DataContext = updateVM;
             //updateVM._progressValuelue = 20;
             //while (updateVM._progressValuelue < 100)
@@ -110,7 +112,7 @@ namespace WpfUpdater
         private string Log { get; set; }
         private void Download_Click(object sender, RoutedEventArgs e)
         {
-            string URL = @"http://192.168.0.103:8080/Update.zip";
+            string URL = paramter[3];
             if (string.IsNullOrEmpty(URL))
             {
                 this.Log = "请求的下载地址是空，请检查！";
@@ -157,6 +159,7 @@ namespace WpfUpdater
                                 {
                                     if (StartMain("WpfMainApp"))
                                     {
+
                                         this.Close();
                                     }
                                 }

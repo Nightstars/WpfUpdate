@@ -15,8 +15,11 @@ namespace WpfMainApp.Util
 {
     public class UpdateUtil
     {
-        public string md5value { get; set; }
-
+        #region checckUpdate
+        /// <summary>
+        /// checckUpdate
+        /// </summary>
+        /// <param name="fileName"></param>
         public void checckUpdate(string fileName)
         {
             var md5=GetMD5(fileName);
@@ -39,13 +42,23 @@ namespace WpfMainApp.Util
                     string updateUrl = $"http://192.168.2.114:10002{apiResult?.Data?.AppFullName}";
                     string installPath = AppDomain.CurrentDomain.BaseDirectory;
                     string updateZipMD5 = apiResult?.Data.AppMD5;
-                    Process.Start("Update.exe", $"{currentVersion}|{lastVersion}|{logHtml}|{updateUrl}|{installPath}|{updateZipMD5}");
+                    if (File.Exists("Update.exe"))
+                    {
+                        Process.Start("Update.exe", $"{currentVersion}|{lastVersion}|{logHtml}|{updateUrl}|{installPath}|{updateZipMD5}");
+                    }
                     Process.GetCurrentProcess().Kill();
                 }
 
             }
         }
+        #endregion
 
+        #region GetMD5
+        /// <summary>
+        /// GetMD5
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public String GetMD5(string fileName)
         {
             try
@@ -62,7 +75,14 @@ namespace WpfMainApp.Util
                 return null;
             }
         }
+        #endregion
 
+        #region GetVersion
+        /// <summary>
+        /// GetVersion
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public string GetVersion(string filename)
         {
             try
@@ -72,9 +92,9 @@ namespace WpfMainApp.Util
             }
             catch (Exception)
             {
-
                 return null;
             }
         }
+        #endregion
     }
 }

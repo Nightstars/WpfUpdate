@@ -11,3 +11,5 @@
 /Demo/bin/Debug/net5.0
 /Demo/obj
 *.user
+/Demo/bin/Release/net5.0
+/update.zip
