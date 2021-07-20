@@ -145,9 +145,9 @@
                     <Run Name="versionInfo" Text="发现新版本:   V1.2.6" FontSize="24"/>
                     <LineBreak/>
                      <LineBreak/>
-                    <Run Text="1、增加了更新提示" FontSize="16"/>
+                    <Run Text="1、增加了新特性" FontSize="16"/>
                      <LineBreak/>
-                     <Run Text="2、增加了新特性" FontSize="16"/>
+                     <Run Text="2、修复了部分已知问题" FontSize="16"/>
                      <LineBreak/>
                     <Run Text="3、优化了部分功能" FontSize="16"/>
                 </TextBlock>
