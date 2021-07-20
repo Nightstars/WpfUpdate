@@ -13,3 +13,4 @@
 *.user
 /Demo/bin/Release/net5.0
 /update.zip
+/WpfUpdate/Update.1.0.0.nupkg

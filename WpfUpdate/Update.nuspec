@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>christ chang</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/Nightstars/WpfUpdate</projectUrl>
+    <iconUrl>https://img.zcool.cn/community/01cdab5a66a75ea8012113c7849434.jpg@1280w_1l_2o_100sh.jpg</iconUrl>
+    <description>WPF 自动升级</description>
+    <releaseNotes></releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>SmartUtils</tags>
+  </metadata>
+</package>
