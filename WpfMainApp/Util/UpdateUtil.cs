@@ -20,7 +20,7 @@ namespace WpfMainApp.Util
         /// checckUpdate
         /// </summary>
         /// <param name="fileName"></param>
-        public void checckUpdate(string fileName)
+        public void checckUpdate(string fileName,string url)
         {
             var md5=GetMD5(fileName);
             using HttpClient httpclient= new HttpClient();
@@ -29,7 +29,7 @@ namespace WpfMainApp.Util
                 md5 = md5
             };
             StringContent content = new StringContent(JsonConvert.SerializeObject(param), Encoding.UTF8, "application/json");
-            var httpResponse = httpclient.PostAsync("http://192.168.2.114:10002/api/AppInfo/CheckUpdate", content).Result;
+            var httpResponse = httpclient.PostAsync($"{url}/api/AppInfo/CheckUpdate", content).Result;
             httpResponse.EnsureSuccessStatusCode();
             if (httpResponse.IsSuccessStatusCode)
             {
@@ -39,7 +39,7 @@ namespace WpfMainApp.Util
                     string currentVersion = GetVersion(fileName);
                     string lastVersion = apiResult?.Data?.AppVersion;
                     string logHtml = "http://cloudapps.life:9003/";
-                    string updateUrl = $"http://192.168.2.114:10002{apiResult?.Data?.AppFullName}";
+                    string updateUrl = $"{url}{apiResult?.Data?.AppFullName}";
                     string installPath = AppDomain.CurrentDomain.BaseDirectory;
                     string updateZipMD5 = apiResult?.Data.AppMD5;
                     if (File.Exists("Update.exe"))

@@ -19,7 +19,7 @@ namespace WpfMainApp
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            new UpdateUtil().checckUpdate("./WpfMainApp.exe");
+            new UpdateUtil().checckUpdate("./WpfMainApp.exe", "http://192.168.2.114:10002");
 
             string currentVersion = "1.0.0";
             string lastVersion="1.0.1";
